@@ -11,18 +11,18 @@ namespace deepdiver.Application.Factories.PredictorFactory
     {
         private String InferenceRootPath;
         private String DescriptorFileName;
-        private String InferenceInvoker;
+        private String InferenceExecutable;
         private String InferenceScriptExtension;
 
         public PredictorFactoryImpl(
             String inferenceRootPath,
             String descriptorFileName,
-            String inferenceInvoker,
+            String inferenceExecutable,
             String inferenceScriptExtension
         ) {
             this.InferenceRootPath = inferenceRootPath;
             this.DescriptorFileName = descriptorFileName;
-            this.InferenceInvoker = inferenceInvoker;
+            this.InferenceExecutable = inferenceExecutable;
             this.InferenceScriptExtension = inferenceScriptExtension;
         }
         public Predictor Create(
@@ -34,7 +34,7 @@ namespace deepdiver.Application.Factories.PredictorFactory
                 RootPath = Path.Combine(InferenceRootPath, predictorName),
                 ExecutionPath = Path.Combine(InferenceRootPath, predictorName, String.Concat(predictorName, InferenceScriptExtension)),
                 DescriptorPath =  Path.Combine(InferenceRootPath, predictorName, DescriptorFileName),
-                Invoker = InferenceInvoker,
+                Executable = InferenceExecutable,
                 InferenceInput = predictorInput
             };
         }

@@ -14,7 +14,7 @@ DotEnv.Load();
 
 var predictorsHome = Environment.GetEnvironmentVariable("PREDICTORS_HOME")!;
 var descriptorFileName = Environment.GetEnvironmentVariable("DESCRIPTOR_FILE_NAME")!;
-var inferenceInvoker = Environment.GetEnvironmentVariable("INFERENCE_INVOKER")!;
+var inferenceExecutable = Environment.GetEnvironmentVariable("INFERENCE_EXECUTABLE")!;
 var inferenceScriptExtension = Environment.GetEnvironmentVariable("INFERENCE_SCRIPT_EXTENSION")!;
 
 builder.Services.AddControllers();
@@ -27,7 +27,7 @@ builder.Services.AddScoped<PredictorNameValidator, PredictorValidationServiceImp
 builder.Services.AddScoped<StringBasedInferenceExecutor, InferenceExecutionServiceImpl>();
 builder.Services.AddScoped<StringBasedCommandExecutor, CommandExecutionAdapterImpl>();
 builder.Services.AddScoped<SimplePredictorFactory, PredictorFactoryImpl>(provider => {
-    return new PredictorFactoryImpl(predictorsHome, descriptorFileName, inferenceInvoker, inferenceScriptExtension);
+    return new PredictorFactoryImpl(predictorsHome, descriptorFileName, inferenceExecutable, inferenceScriptExtension);
 });
 
 var app = builder.Build();

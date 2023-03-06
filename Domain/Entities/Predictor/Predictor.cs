@@ -13,7 +13,7 @@ namespace deepdiver.Domain.Entities.Predictor
         public String ExecutionPath { get; set; } = String.Empty;
         public String DescriptorPath { get; set; } = String.Empty;
         public String InferenceInput { get; set; } = String.Empty;
-        public String Invoker { get; set; } = String.Empty;
+        public String Executable { get; set; } = String.Empty;
         public DateTime LastUpdated { get; set; }
     }
 }

@@ -7,6 +7,6 @@ namespace deepdiver.Infrastructure.Adapters.CommandExecutionAdapter.Ports.String
 {
     public interface StringBasedCommandExecutor
     {
-         public String Execute(String command);   
+         public String Execute(String executable, String arguments);   
     }
 }

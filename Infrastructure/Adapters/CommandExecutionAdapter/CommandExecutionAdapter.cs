@@ -7,6 +7,6 @@ namespace deepdiver.Infrastructure.Adapters.CommandExecutionAdapter
 {
     public interface CommandExecutionAdapter
     {
-        public String Execute(String command);
+        public String Execute(String executable, String arguments);
     }
 }

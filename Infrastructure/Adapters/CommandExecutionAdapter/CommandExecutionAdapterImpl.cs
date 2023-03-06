@@ -8,8 +8,8 @@ namespace deepdiver.Infrastructure.Adapters.CommandExecutionAdapter
 {
     public class CommandExecutionAdapterImpl : CommandExecutionAdapter, StringBasedCommandExecutor
     {
-        public String Execute(String command) {
-            return command;
+        public String Execute(String executable, String arguments) {
+            return $"{executable} {arguments}";
         }
     }
 }

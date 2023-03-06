@@ -17,8 +17,8 @@ namespace deepdiver.Application.Services.InferenceExecutionService
         }
 
         public String Infer(Predictor predictor) {
-            String inferenceInput = "\"" + predictor.InferenceInput + "\"";
-            return CommandExecutor.Execute(String.Join(" ", new String[] { predictor.Invoker, predictor.ExecutionPath, inferenceInput }));
+            String inferenceInput = $"'{predictor.InferenceInput}'";
+            return CommandExecutor.Execute(predictor.Executable, $"{predictor.ExecutionPath} {inferenceInput}");
         }
     }
 }
