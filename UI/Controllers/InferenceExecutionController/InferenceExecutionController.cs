@@ -6,11 +6,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-using deepdiver.UI.Dtos.InferenceExectuionDto.Request.InferenceExecutionRequestDto;
+using deepdiver.UI.Controllers.InferenceExecutionController.Dtos.InferenceExectuionDto.Request.InferenceExecutionRequestDto;
 using deepdiver.Application.Services.PredictorValidationService.Ports.PredictorNameValidator;
-using deepdiver.Application.Factories.PredictorFactory.Ports.SimplePredictorFactory;
-using deepdiver.Application.Factories.PredictorFactory;
-using deepdiver.UI.Dtos.InferenceExectuionDto.Response.InferenceExecutionResponseDto;
+using deepdiver.UI.Controllers.InferenceExecutionController.Dtos.InferenceExectuionDto.Response.InferenceExecutionResponseDto;
 using deepdiver.Application.Services.InferenceExecutionService.Ports.StringBasedInferenceExecutor;
 
 namespace deepdiver.UI.Controllers.InferenceExecutionController
@@ -18,13 +16,11 @@ namespace deepdiver.UI.Controllers.InferenceExecutionController
     [Route("deepdiver/api/infer/{predictorName}")]
     public class InferenceExecutionController : Controller {
         private readonly PredictorNameValidator PredictorNameValidator;
-        private readonly SimplePredictorFactory predictorFactory;
         private readonly StringBasedInferenceExecutor InferenceExecutor;
 
-        public InferenceExecutionController(PredictorNameValidator predictorNameValidator, StringBasedInferenceExecutor inferenceExecutor, SimplePredictorFactory predictorFactory) {
+        public InferenceExecutionController(PredictorNameValidator predictorNameValidator, StringBasedInferenceExecutor inferenceExecutor) {
             this.PredictorNameValidator = predictorNameValidator;
             this.InferenceExecutor = inferenceExecutor;
-            this.predictorFactory = predictorFactory;
         }
 
         [HttpPost]
@@ -33,7 +29,7 @@ namespace deepdiver.UI.Controllers.InferenceExecutionController
 
             if (isPredictorNameValid) {
                 return Ok(new InferenceExecutionResponseDto {
-                    InferenceResponseData = InferenceExecutor.Infer(predictorFactory.Create(predictorName, inferenceExecutionData.InferenceInputData)),
+                    InferenceResponseData = InferenceExecutor.Infer(predictorName, inferenceExecutionData.InferenceInputData),
                 });
             }
             

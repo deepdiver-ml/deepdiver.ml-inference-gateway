@@ -1,20 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using deepdiver.Application.Factories.PredictorFactory.Ports.SimplePredictorFactory;
 using deepdiver.Domain.Entities.Predictor;
 
-namespace deepdiver.Application.Factories.PredictorFactory
-{
-    public class PredictorFactoryImpl : Domain.Factories.PredictorFactory.PredictorFactory, SimplePredictorFactory
-    {
+namespace deepdiver.Application.Factories.PredictorFactory {
+    public class PredictorFactoryImpl : Domain.Factories.PredictorFactory.PredictorFactory, SimplePredictorFactory {
         private String InferenceRootPath;
         private String DescriptorFileName;
         private String InferenceExecutable;
         private String InferenceScriptExtension;
 
-        public PredictorFactoryImpl(
+        public PredictorFactoryImpl (
             String inferenceRootPath,
             String descriptorFileName,
             String inferenceExecutable,

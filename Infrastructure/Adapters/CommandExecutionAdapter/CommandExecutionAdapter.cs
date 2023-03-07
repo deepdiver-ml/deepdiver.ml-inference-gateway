@@ -1,12 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using deepdiver.Infrastructure.Shared.Dtos.AdapterDto.Response.AdapterResponseDto;
+using deepdiver.Infrastructure.Shared.Models.AdapterModel.AdapterResponsePayloadModel;
 
-namespace deepdiver.Infrastructure.Adapters.CommandExecutionAdapter
-{
-    public interface CommandExecutionAdapter
-    {
-        public String Execute(String executable, String arguments);
+namespace deepdiver.Infrastructure.Adapters.CommandExecutionAdapter {
+    public interface CommandExecutionAdapter {
+        public AdapterResponseDto<AdapterResponsePayloadModel<String>> Execute(String executable, String arguments);
     }
 }
