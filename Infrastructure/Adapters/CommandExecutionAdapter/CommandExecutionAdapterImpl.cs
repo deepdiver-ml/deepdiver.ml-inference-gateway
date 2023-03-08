@@ -1,11 +1,11 @@
 using System.Diagnostics;
-using deepdiver.Infrastructure.Adapters.CommandExecutionAdapter.Ports.StringBasedCommandExecutor;
-using deepdiver.Infrastructure.Shared.Models.AdapterModel.AdapterResponsePayloadModel;
-using deepdiver.Infrastructure.Shared.Dtos.AdapterDto.Response.AdapterResponseDto;
+using deepdiver.Infrastructure.Adapters.CommandExecutionAdapter.Ports.CommandExecutor;
+using deepdiver.Infrastructure.Adapters.Dtos.GenericAdapterDto;
+using deepdiver.Infrastructure.Adapters.Models;
 
 namespace deepdiver.Infrastructure.Adapters.CommandExecutionAdapter {
-    public class CommandExecutionAdapterImpl : CommandExecutionAdapter, StringBasedCommandExecutor {
-        public AdapterResponseDto<AdapterResponsePayloadModel<String>> Execute(String executable, String arguments) {
+    public class CommandExecutionAdapterImpl : CommandExecutionAdapter, CommandExecutor {
+        public GenericAdapterResponseDto<GenericAdapterResponsePayloadModel<String>> Execute(String executable, String arguments) {
 
             ProcessStartInfo startInfo = new ProcessStartInfo();
             startInfo.FileName = executable;
@@ -23,16 +23,16 @@ namespace deepdiver.Infrastructure.Adapters.CommandExecutionAdapter {
                     process.WaitForExit();
                 }
             } catch (Exception exception) {
-                return new AdapterResponseDto<AdapterResponsePayloadModel<String>>() {
+                return new GenericAdapterResponseDto<GenericAdapterResponsePayloadModel<String>>() {
                     Success = false,
-                    Data = new AdapterResponsePayloadModel<String> {
+                    Data = new GenericAdapterResponsePayloadModel<String> {
                         Value = exception.Message
                     }
                 };
             }
 
-            return new AdapterResponseDto<AdapterResponsePayloadModel<String>>() {
-                Data = new AdapterResponsePayloadModel<String> {
+            return new GenericAdapterResponseDto<GenericAdapterResponsePayloadModel<String>>() {
+                Data = new GenericAdapterResponsePayloadModel<String> {
                     Value = output
                 }
             };

@@ -1,5 +1,5 @@
 using System.Reflection;
-using deepdiver.Application.Services.PredictorValidationService.Ports.PredictorNameValidator;
+using deepdiver.Application.Services.PredictorValidationService.Ports;
 using deepdiver.Domain.Constants.PredictorNames;
 
 namespace deepdiver.Application.Services.PredictorValidationService {

@@ -1,11 +1,11 @@
 using deepdiver.Application.Factories.PredictorFactory;
-using deepdiver.Application.Factories.PredictorFactory.Ports.SimplePredictorFactory;
+using deepdiver.Application.Factories.PredictorFactory.Ports;
 using deepdiver.Application.Services.InferenceExecutionService;
-using deepdiver.Application.Services.InferenceExecutionService.Ports.StringBasedInferenceExecutor;
+using deepdiver.Application.Services.InferenceExecutionService.Ports;
 using deepdiver.Application.Services.PredictorValidationService;
-using deepdiver.Application.Services.PredictorValidationService.Ports.PredictorNameValidator;
+using deepdiver.Application.Services.PredictorValidationService.Ports;
 using deepdiver.Infrastructure.Adapters.CommandExecutionAdapter;
-using deepdiver.Infrastructure.Adapters.CommandExecutionAdapter.Ports.StringBasedCommandExecutor;
+using deepdiver.Infrastructure.Adapters.CommandExecutionAdapter.Ports.CommandExecutor;
 using dotenv.net;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,8 +24,8 @@ builder.Services.AddSwaggerGen();
 
 
 builder.Services.AddScoped<PredictorNameValidator, PredictorValidationServiceImpl>();
-builder.Services.AddScoped<StringBasedInferenceExecutor, InferenceExecutionServiceImpl>();
-builder.Services.AddScoped<StringBasedCommandExecutor, CommandExecutionAdapterImpl>();
+builder.Services.AddScoped<InferenceExecutor, InferenceExecutionServiceImpl>();
+builder.Services.AddScoped<CommandExecutor, CommandExecutionAdapterImpl>();
 builder.Services.AddScoped<SimplePredictorFactory, PredictorFactoryImpl>(provider => {
     return new PredictorFactoryImpl(predictorsHome, descriptorFileName, inferenceExecutable, inferenceScriptExtension);
 });

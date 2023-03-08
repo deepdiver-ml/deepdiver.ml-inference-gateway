@@ -1,4 +1,4 @@
-using deepdiver.Application.Factories.PredictorFactory.Ports.SimplePredictorFactory;
+using deepdiver.Application.Factories.PredictorFactory.Ports;
 using deepdiver.Domain.Entities.Predictor;
 
 namespace deepdiver.Application.Factories.PredictorFactory {

@@ -4,21 +4,19 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-
-using deepdiver.UI.Controllers.InferenceExecutionController.Dtos.InferenceExectuionDto.Request.InferenceExecutionRequestDto;
-using deepdiver.Application.Services.PredictorValidationService.Ports.PredictorNameValidator;
-using deepdiver.UI.Controllers.InferenceExecutionController.Dtos.InferenceExectuionDto.Response.InferenceExecutionResponseDto;
-using deepdiver.Application.Services.InferenceExecutionService.Ports.StringBasedInferenceExecutor;
+using deepdiver.UI.Controllers.InferenceExecutionController.Dtos.InferenceExecutionDto;
+using deepdiver.Application.Services.PredictorValidationService.Ports;
+using deepdiver.Application.Services.InferenceExecutionService.Ports;
+using InferenceService = deepdiver.Application.Services.InferenceExecutionService.Dtos.InferenceExecutionDto;
 
 namespace deepdiver.UI.Controllers.InferenceExecutionController
 {
     [Route("deepdiver/api/infer/{predictorName}")]
     public class InferenceExecutionController : Controller {
         private readonly PredictorNameValidator PredictorNameValidator;
-        private readonly StringBasedInferenceExecutor InferenceExecutor;
+        private readonly InferenceExecutor InferenceExecutor;
 
-        public InferenceExecutionController(PredictorNameValidator predictorNameValidator, StringBasedInferenceExecutor inferenceExecutor) {
+        public InferenceExecutionController(PredictorNameValidator predictorNameValidator, InferenceExecutor inferenceExecutor) {
             this.PredictorNameValidator = predictorNameValidator;
             this.InferenceExecutor = inferenceExecutor;
         }
@@ -29,7 +27,10 @@ namespace deepdiver.UI.Controllers.InferenceExecutionController
 
             if (isPredictorNameValid) {
                 return Ok(new InferenceExecutionResponseDto {
-                    InferenceResponseData = InferenceExecutor.Infer(predictorName, inferenceExecutionData.InferenceInputData),
+                    Result = InferenceExecutor.Infer(new InferenceService.InferenceExecutionRequestDto {
+                        predictorName = predictorName,
+                        predictorInput = inferenceExecutionData.Input
+                    }).InferenceResult,
                 });
             }
             
