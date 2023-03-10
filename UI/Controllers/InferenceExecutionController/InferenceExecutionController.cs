@@ -7,10 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using deepdiver.UI.Controllers.InferenceExecutionController.Dtos.InferenceExecutionDto;
 using deepdiver.Application.Services.PredictorValidationService.Ports;
 using deepdiver.Application.Services.InferenceExecutionService.Ports;
-using InferenceService = deepdiver.Application.Services.InferenceExecutionService.Dtos.InferenceExecutionDto;
 
-namespace deepdiver.UI.Controllers.InferenceExecutionController
-{
+namespace deepdiver.UI.Controllers.InferenceExecutionController {
     [Route("deepdiver/api/infer/{predictorName}")]
     public class InferenceExecutionController : Controller {
         private readonly PredictorNameValidator PredictorNameValidator;
@@ -27,10 +25,7 @@ namespace deepdiver.UI.Controllers.InferenceExecutionController
 
             if (isPredictorNameValid) {
                 return Ok(new InferenceExecutionResponseDto {
-                    Result = InferenceExecutor.Infer(new InferenceService.InferenceExecutionRequestDto {
-                        predictorName = predictorName,
-                        predictorInput = inferenceExecutionData.Input
-                    }).InferenceResult,
+                    Result = InferenceExecutor.Infer(predictorName, inferenceExecutionData.Input).Data!.Value!,
                 });
             }
             

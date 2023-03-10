@@ -1,12 +1,11 @@
 using System.Diagnostics;
+using deepdiver.Infrastructure.Adapters.CommandExecutionAdapter.Dtos.CommandExecutionResponseDto;
 using deepdiver.Infrastructure.Adapters.CommandExecutionAdapter.Ports.CommandExecutor;
-using deepdiver.Infrastructure.Adapters.Dtos.GenericAdapterDto;
 using deepdiver.Infrastructure.Adapters.Models;
 
 namespace deepdiver.Infrastructure.Adapters.CommandExecutionAdapter {
     public class CommandExecutionAdapterImpl : CommandExecutionAdapter, CommandExecutor {
-        public GenericAdapterResponseDto<GenericAdapterResponsePayloadModel<String>> Execute(String executable, String arguments) {
-
+        public CommandExecutionResponseDto Execute(String executable, String arguments) {
             ProcessStartInfo startInfo = new ProcessStartInfo();
             startInfo.FileName = executable;
             startInfo.Arguments = arguments;
@@ -23,7 +22,7 @@ namespace deepdiver.Infrastructure.Adapters.CommandExecutionAdapter {
                     process.WaitForExit();
                 }
             } catch (Exception exception) {
-                return new GenericAdapterResponseDto<GenericAdapterResponsePayloadModel<String>>() {
+                return new CommandExecutionResponseDto {
                     Success = false,
                     Data = new GenericAdapterResponsePayloadModel<String> {
                         Value = exception.Message
@@ -31,7 +30,7 @@ namespace deepdiver.Infrastructure.Adapters.CommandExecutionAdapter {
                 };
             }
 
-            return new GenericAdapterResponseDto<GenericAdapterResponsePayloadModel<String>>() {
+            return new CommandExecutionResponseDto {
                 Data = new GenericAdapterResponsePayloadModel<String> {
                     Value = output
                 }

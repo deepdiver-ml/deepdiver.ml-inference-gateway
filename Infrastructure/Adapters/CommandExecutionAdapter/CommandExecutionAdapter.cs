@@ -1,8 +1,7 @@
-using deepdiver.Infrastructure.Adapters.Dtos.GenericAdapterDto;
-using deepdiver.Infrastructure.Adapters.Models;
+using deepdiver.Infrastructure.Adapters.CommandExecutionAdapter.Dtos.CommandExecutionResponseDto;
 
 namespace deepdiver.Infrastructure.Adapters.CommandExecutionAdapter {
     public interface CommandExecutionAdapter {
-        public GenericAdapterResponseDto<GenericAdapterResponsePayloadModel<String>> Execute(String executable, String arguments);
+        public CommandExecutionResponseDto Execute(String executable, String arguments);
     }
 }
