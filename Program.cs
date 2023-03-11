@@ -6,6 +6,8 @@ using deepdiver.Application.Services.PredictorValidationService;
 using deepdiver.Application.Services.PredictorValidationService.Ports;
 using deepdiver.Infrastructure.Adapters.CommandExecutionAdapter;
 using deepdiver.Infrastructure.Adapters.CommandExecutionAdapter.Ports.CommandExecutor;
+using deepdiver.Infrastructure.Adapters.FileWriterAdapter;
+using deepdiver.Infrastructure.Adapters.FileWriterAdapter.Ports;
 using dotenv.net;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,10 +24,10 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-
-builder.Services.AddScoped<PredictorNameValidator, PredictorValidationServiceImpl>();
 builder.Services.AddScoped<InferenceExecutor, InferenceExecutionServiceImpl>();
+builder.Services.AddScoped<PredictorNameValidator, PredictorValidationServiceImpl>();
 builder.Services.AddScoped<CommandExecutor, CommandExecutionAdapterImpl>();
+builder.Services.AddScoped<FileWriter, FileWriterAdapterImpl>();
 builder.Services.AddScoped<SimplePredictorFactory, PredictorFactoryImpl>(provider => {
     return new PredictorFactoryImpl(predictorsHome, descriptorFileName, inferenceExecutable, inferenceScriptExtension);
 });
