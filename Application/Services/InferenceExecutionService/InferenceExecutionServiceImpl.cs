@@ -34,12 +34,18 @@ namespace deepdiver.Application.Services.InferenceExecutionService {
         public InferenceExecutionResponseDto Infer(InferenceExecutionRequestDto predictorData) {
             Predictor predictor = predictorFactory.Create(predictorData.PredictorId, predictorData.PredictorName, predictorData.PredictorInput);
             var predictionInput = predictorData.PredictorInput;
+            var reason = "";
 
             if (predictorData.Physical) {
-                predictor.InputFile = PredictorInputFileFactory.Create(predictor);
+                var fileCreationResult = PredictorInputFileFactory.Create(predictor);
+                reason = fileCreationResult.Reason;
 
-                if (predictor.InputFile is not null) {
-                    var readerResponse = FileReader.Read(predictor.InputFile.Path);
+                if (fileCreationResult.Success) {
+                    predictor.InputFile = fileCreationResult.Data!.Value;
+
+                    var readerResponse = FileReader.Read(predictor.InputFile!.Path);
+                    reason = readerResponse.Reason;
+
                     predictionInput = readerResponse.Data!.Content;
                     PredictorInputFileFactory.Destroy(predictor.InputFile!);
                 }
@@ -57,7 +63,7 @@ namespace deepdiver.Application.Services.InferenceExecutionService {
                 response.Data.Value = commandExecutionResult.Data is not null ? commandExecutionResult.Data.Value : null;
             } else {
                 response.Success = false;
-                response.Reason = "Inference execution failed.";
+                response.Reason = reason;
             }
 
             return response;
