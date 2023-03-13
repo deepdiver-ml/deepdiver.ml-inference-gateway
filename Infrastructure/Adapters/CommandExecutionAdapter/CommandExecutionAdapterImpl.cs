@@ -4,9 +4,11 @@ using deepdiver.Infrastructure.Adapters.CommandExecutionAdapter.Ports.CommandExe
 using deepdiver.Infrastructure.Adapters.Models;
 
 namespace deepdiver.Infrastructure.Adapters.CommandExecutionAdapter {
-    public class CommandExecutionAdapterImpl : CommandExecutionAdapter, CommandExecutor {
-        public CommandExecutionResponseDto Execute(String executable, String arguments) {
-            var (success, reason, data) = ExecuteCommandInServerTerminal(executable, arguments);
+    public class CommandExecutionAdapterImpl : CommandExecutor {
+        public CommandExecutionResponseDto Execute((String, String, String) executionData) {
+            var (executablePath, executionPath, inputData) = executionData;
+
+            var (success, reason, data) = ExecuteCommandInServerTerminal(executablePath, executionPath, inputData);
             
             var response = new CommandExecutionResponseDto {
                 Success = success,
@@ -16,13 +18,14 @@ namespace deepdiver.Infrastructure.Adapters.CommandExecutionAdapter {
 
             return response;
         }
-        private (Boolean, String?, String?) ExecuteCommandInServerTerminal(String fileName, String arguments) {
+        private (Boolean, String?, String?) ExecuteCommandInServerTerminal(String executablePath, String executionPath, String inputData) {
             ProcessStartInfo startInfo = new ProcessStartInfo();
-            startInfo.FileName = fileName;
-            startInfo.Arguments = arguments;
+            startInfo.FileName = executablePath;
+            startInfo.Arguments = $@"""{executionPath}""";
             startInfo.UseShellExecute = false;
             startInfo.RedirectStandardOutput = true;
             startInfo.RedirectStandardError = true;
+            startInfo.RedirectStandardInput = true;
 
             String output = "";
             String? error = null;
@@ -35,14 +38,18 @@ namespace deepdiver.Infrastructure.Adapters.CommandExecutionAdapter {
                 using (Process process = new Process()) {
                     process.StartInfo = startInfo;
                     process.Start();
+                    process.StandardInput.Write(inputData);
+                    process.StandardInput.Close();
                     output = process.StandardOutput.ReadToEnd();
                     error = process.StandardError.ReadToEnd();
                     process.WaitForExit();
                 }
 
+                var success = String.IsNullOrEmpty(error);
+
                 return (
-                    error is null,
-                    error is not null ? error : null,
+                    success,
+                    success ? null : error,
                     output
                 );
             } catch (Exception exception) {

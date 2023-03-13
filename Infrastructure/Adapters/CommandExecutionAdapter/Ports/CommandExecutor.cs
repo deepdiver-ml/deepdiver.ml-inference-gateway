@@ -2,6 +2,6 @@ using deepdiver.Infrastructure.Adapters.CommandExecutionAdapter.Dtos.CommandExec
 
 namespace deepdiver.Infrastructure.Adapters.CommandExecutionAdapter.Ports.CommandExecutor {
     public interface CommandExecutor {
-        public CommandExecutionResponseDto Execute(String executable, String arguments);
+        public CommandExecutionResponseDto Execute((String, String, String) executionData);
     }
 }

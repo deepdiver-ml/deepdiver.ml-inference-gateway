@@ -1,7 +1,7 @@
-using deepdiver.Application.Services.InferenceExecutionService.Dtos.InferenceExecutionResponseDto;
+using deepdiver.Application.Services.InferenceExecutionService.Dtos;
 
 namespace deepdiver.Application.Services.InferenceExecutionService.Ports {
     public interface InferenceExecutor {
-        public InferenceExecutionResponseDto Infer(String predictorName, String predictorInput);
+        public InferenceExecutionResponseDto Infer(InferenceExecutionRequestDto predictorData);
     }
 }

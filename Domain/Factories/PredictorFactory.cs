@@ -1,7 +1,7 @@
 using deepdiver.Domain.Entities;
 
-namespace deepdiver.Application.Factories.PredictorFactory.Ports {
-    public interface SimplePredictorFactory {
+namespace deepdiver.Domain.Factories {
+    public interface PredictorFactory {
         public Predictor Create(String predictorId, String predictorName, String predictorInput);
     }
 }

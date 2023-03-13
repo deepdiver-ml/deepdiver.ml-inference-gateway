@@ -1,8 +1,8 @@
 using deepdiver.Application.Factories.PredictorFactory.Ports;
-using deepdiver.Domain.Entities.Predictor;
+using deepdiver.Domain.Entities;
 
 namespace deepdiver.Application.Factories.PredictorFactory {
-    public class PredictorFactoryImpl : Domain.Factories.PredictorFactory.PredictorFactory, SimplePredictorFactory {
+    public class PredictorFactoryImpl : Domain.Factories.PredictorFactory, SimplePredictorFactory {
         private String InferenceRootPath;
         private String DescriptorFileName;
         private String InferenceExecutable;
@@ -20,10 +20,12 @@ namespace deepdiver.Application.Factories.PredictorFactory {
             this.InferenceScriptExtension = inferenceScriptExtension;
         }
         public Predictor Create(
+            String predictorId,
             String predictorName,
             String predictorInput
         ) {
             return new Predictor() {
+                Id = predictorId,
                 Name = predictorName,
                 RootPath = Path.Combine(InferenceRootPath, predictorName),
                 ExecutionPath = Path.Combine(InferenceRootPath, predictorName, String.Concat(predictorName, InferenceScriptExtension)),
