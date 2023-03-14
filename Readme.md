@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./iglogo.png" align="center" width="200" style="border-radius: 20px;"/>
+  <img src="./logo.png" align="center" width="200" style="border-radius: 20px;"/>
 </p>
 
 # deepdiver.ml Inference Gateway
