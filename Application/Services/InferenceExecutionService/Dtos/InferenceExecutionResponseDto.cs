@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using deepdiver.Application.Services.Dtos.GenericServiceResponseDto;
 using deepdiver.Application.Services.Models.GenericServiceResponsePayloadModel;
 

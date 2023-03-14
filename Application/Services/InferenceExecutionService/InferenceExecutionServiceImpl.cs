@@ -11,8 +11,8 @@ using deepdiver.Application.Factories.PredictorInputFileFactory.Ports;
 namespace deepdiver.Application.Services.InferenceExecutionService {
     public class InferenceExecutionServiceImpl : InferenceExecutor {
         private CommandExecutor CommandExecutor;
-        private readonly SimplePredictorFactory predictorFactory;
-        SimplePredictorInputFileFactory PredictorInputFileFactory;
+        private readonly PredictorCreator PredictorCreator;
+        PredictorInputFileCreator PredictorInputFileCreator;
         private readonly FileWriter FileWriter;
         private readonly FileReader FileReader;
 
@@ -20,24 +20,24 @@ namespace deepdiver.Application.Services.InferenceExecutionService {
         public InferenceExecutionServiceImpl(
             CommandExecutor commandExecutor,
             FileWriter fileWriter,
-            SimplePredictorFactory predictorFactory,
-            SimplePredictorInputFileFactory predictorInputFileFactory,
+            PredictorCreator predictorCreator,
+            PredictorInputFileCreator predictorInputFileCreator,
             FileReader fileReader
         ) {
             this.CommandExecutor = commandExecutor;
             this.FileWriter = fileWriter;
-            this.predictorFactory = predictorFactory;
-            this.PredictorInputFileFactory = predictorInputFileFactory;
+            this.PredictorCreator = predictorCreator;
+            this.PredictorInputFileCreator = predictorInputFileCreator;
             this.FileReader = fileReader;
         }
 
         public InferenceExecutionResponseDto Infer(InferenceExecutionRequestDto predictorData) {
-            Predictor predictor = predictorFactory.Create(predictorData.PredictorId, predictorData.PredictorName, predictorData.PredictorInput);
+            Predictor predictor = PredictorCreator.Create(predictorData.PredictorId, predictorData.PredictorName, predictorData.PredictorInput);
             var predictionInput = predictorData.PredictorInput;
             var reason = "";
 
             if (predictorData.Physical) {
-                var fileCreationResult = PredictorInputFileFactory.Create(predictor);
+                var fileCreationResult = PredictorInputFileCreator.Create(predictor);
                 reason = fileCreationResult.Reason;
 
                 if (fileCreationResult.Success) {
@@ -47,7 +47,7 @@ namespace deepdiver.Application.Services.InferenceExecutionService {
                     reason = readerResponse.Reason;
 
                     predictionInput = readerResponse.Data!.Content;
-                    PredictorInputFileFactory.Destroy(predictor.InputFile!);
+                    PredictorInputFileCreator.Destroy(predictor.InputFile!);
                 }
             }
 

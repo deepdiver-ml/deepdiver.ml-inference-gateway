@@ -2,6 +2,8 @@ using deepdiver.Application.Factories.PredictorFactory;
 using deepdiver.Application.Factories.PredictorFactory.Ports;
 using deepdiver.Application.Factories.PredictorInputFileFactory;
 using deepdiver.Application.Factories.PredictorInputFileFactory.Ports;
+using deepdiver.Application.Services.DescriptionService;
+using deepdiver.Application.Services.DescriptionService.Ports;
 using deepdiver.Application.Services.InferenceExecutionService;
 using deepdiver.Application.Services.InferenceExecutionService.Ports;
 using deepdiver.Application.Services.PredictorValidationService;
@@ -21,7 +23,7 @@ var builder = WebApplication.CreateBuilder(args);
 DotEnv.Load();
 
 var predictorsHome = Environment.GetEnvironmentVariable("PREDICTORS_HOME")!;
-var descriptorFileName = Environment.GetEnvironmentVariable("DESCRIPTOR_FILE_NAME")!;
+var descriptorExtension = Environment.GetEnvironmentVariable("DESCRIPTOR_EXTENSION")!;
 var inferenceExecutable = Environment.GetEnvironmentVariable("INFERENCE_EXECUTABLE")!;
 var inferenceScriptExtension = Environment.GetEnvironmentVariable("INFERENCE_SCRIPT_EXTENSION")!;
 
@@ -33,15 +35,16 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<InferenceExecutor, InferenceExecutionServiceImpl>();
 builder.Services.AddScoped<PredictorNameValidator, PredictorValidationServiceImpl>();
+builder.Services.AddScoped<Descriptor, DescriptionServiceImpl>();
 builder.Services.AddScoped<CommandExecutor, CommandExecutionAdapterImpl>();
 builder.Services.AddScoped<FileWriter, FileWriterAdapterImpl>();
 builder.Services.AddScoped<FileReader, FileReaderAdapterImpl>();
 builder.Services.AddScoped<FileDestroyer, FileDestroyerAdapterImpl>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-builder.Services.AddScoped<SimplePredictorFactory, PredictorFactoryImpl>(provider => {
-    return new PredictorFactoryImpl(predictorsHome, descriptorFileName, inferenceExecutable, inferenceScriptExtension);
+builder.Services.AddScoped<PredictorCreator, PredictorFactoryImpl>(provider => {
+    return new PredictorFactoryImpl(predictorsHome, descriptorExtension, inferenceExecutable, inferenceScriptExtension);
 });
-builder.Services.AddScoped<SimplePredictorInputFileFactory, PredictorInputFileFactoryImpl>();
+builder.Services.AddScoped<PredictorInputFileCreator, PredictorInputFileFactoryImpl>();
 
 var app = builder.Build();
 

@@ -6,6 +6,7 @@ using deepdiver.Application.Services.PredictorValidationService.Ports;
 using deepdiver.Lib;
 using deepdiver.UI.Controllers.Lib;
 using InferenceData = deepdiver.Application.Services.InferenceExecutionService.Dtos;
+using deepdiver.UI.Controllers.Models;
 
 namespace deepdiver.UI.Controllers.InferenceExecutionController {
     [Route("deepdiver/api/infer/{predictorName}")]
@@ -21,7 +22,7 @@ namespace deepdiver.UI.Controllers.InferenceExecutionController {
 
         [UniqueSession]
         [HttpPost]
-        public async Task<ActionResult<InferenceExecutionResponseDto>> getInferenceResponse([FromBody] InferenceExectutionRequestDto inferenceExecutionData, [FromRoute] String predictorName) {
+        public async Task<ActionResult<InferenceExecutionResponseDto>> GetInferenceResponse([FromBody] InferenceExectutionRequestDto inferenceExecutionData, [FromRoute] String predictorName) {
             var isPredictorNameValid = PredictorNameValidator.ValidateName(EnumLib.GetKeys<Predictors>(), predictorName);
 
             if (isPredictorNameValid) {
@@ -36,7 +37,7 @@ namespace deepdiver.UI.Controllers.InferenceExecutionController {
 
                 var response = new InferenceExecutionResponseDto {
                     Success = inferenceResult.Success,
-                    Result = inferenceResult.Success ? inferenceResult.Data!.Value : inferenceResult.Reason,
+                    Data = new GenericControllerResponsePayloadModel<String> { Value = inferenceResult.Success ? inferenceResult.Data!.Value : inferenceResult.Reason, }
                 };
 
                 return response.Success ? Ok(response) : StatusCode(500, response);
@@ -44,7 +45,7 @@ namespace deepdiver.UI.Controllers.InferenceExecutionController {
             
             return BadRequest(new InferenceExecutionResponseDto {
                 Success = false,
-                Result = "This resource does not exist."
+                Data = new GenericControllerResponsePayloadModel<String> { Value = "This resource does not exist." }
             });
         }
     }

@@ -6,7 +6,7 @@ using deepdiver.Domain.ValueObjects;
 using deepdiver.Application.Factories.PredictorInputFileFactory.Dtos;
 
 namespace deepdiver.Application.Factories.PredictorInputFileFactory {
-    public class PredictorInputFileFactoryImpl : Domain.Factories.PredictorInputFileFactory<PredictorInputFileFactoryResponseDto>, SimplePredictorInputFileFactory {
+    public class PredictorInputFileFactoryImpl : Domain.Factories.PredictorInputFileFactory<PredictorInputFileFactoryResponseDto>, PredictorInputFileCreator {
         private readonly FileDestroyer FileDestroyer;
         private readonly FileWriter FileWriter;
 
