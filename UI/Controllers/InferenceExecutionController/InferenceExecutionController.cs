@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using deepdiver.UI.Controllers.InferenceExecutionController.Dtos.InferenceExecutionDto;
+using deepdiver.UI.Controllers.InferenceExecutionController.Dtos;
 using deepdiver.Application.Services.InferenceExecutionService.Ports;
 using deepdiver.Domain.Enums;
 using deepdiver.Application.Services.PredictorValidationService.Ports;
