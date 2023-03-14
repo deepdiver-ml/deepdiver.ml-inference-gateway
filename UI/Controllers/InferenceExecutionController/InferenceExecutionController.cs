@@ -20,8 +20,9 @@ namespace deepdiver.UI.Controllers.InferenceExecutionController {
             this.InferenceExecutor = inferenceExecutor;
         }
 
-        [UniqueSession]
         [HttpPost]
+        [UniqueSession]
+        [ResponseCache(Duration = 300)]
         public async Task<ActionResult<InferenceExecutionResponseDto>> GetInferenceResponse([FromBody] InferenceExectutionRequestDto inferenceExecutionData, [FromRoute] String predictorName) {
             var isPredictorNameValid = PredictorNameValidator.ValidateName(EnumLib.GetKeys<Predictors>(), predictorName);
 
